@@ -7,8 +7,8 @@
 - HEYRAUD Dylan
 
 #### Back-End
-Serveur Node.js avec le framework Express
-Base de données avec MySQL
+- Serveur Node.js avec le framework Express
+- Base de données avec MySQL
 
 #### Front-End
-Framework Angular
+- Framework Angular
