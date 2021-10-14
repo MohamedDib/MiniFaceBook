@@ -1,0 +1,20 @@
+<main class="main-wrapper notifications">
+  <h1>Notifications</h1>
+  <div class="container">
+    <section class="notifications--delete-all">
+      <button class="btn--danger" (click)="onDeleteAll()">Supprimer tout</button>
+    </section>
+    <section *ngIf="notificationsService.notifications.length > 0">
+      <div *ngFor="let notification of notificationsService.notifications" class="notifications--list">
+        <a [routerLink]="'/post/' + notification.postId">
+          <p *ngIf="notification.type === 'reaction'">{{notification.initiator}} a réagi à votre post</p>
+          <p *ngIf="notification.type === 'comment'">{{notification.initiator}} a commenté votre post</p>
+          <p *ngIf="notification.type === 'answer'">{{notification.initiator}} a répondu à votre commentaire</p>
+        </a>
+        <button class="btn--danger" (click)="onDeleteOne(notification.id)" aria-label="Supprimer la notification"><i class="fas fa-trash"></i></button>
+      </div>
+    </section>
+    <p *ngIf="notificationsService.notifications.length === 0">Vous n'avez pas de nouvelles notifications</p>
+  </div>
+</main>
+
