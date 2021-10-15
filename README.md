@@ -5,6 +5,8 @@
 - RAMDANI Massinissa
 - DIB Mohamed
 - HEYRAUD Dylan
+- DAOUADJI MAnel 
+- MENGUELTI Yasmine
 
 #### Back-End
 - Serveur Node.js avec le framework Express
