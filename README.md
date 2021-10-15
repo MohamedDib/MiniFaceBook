@@ -5,7 +5,7 @@
 - RAMDANI Massinissa
 - DIB Mohamed
 - HEYRAUD Dylan
-- DAOUADJI MAnel 
+- DAOUADJI Manel 
 - MENGUELTI Yasmine
 
 #### Back-End
