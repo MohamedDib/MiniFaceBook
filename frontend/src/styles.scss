@@ -1,0 +1,49 @@
+@import "./variables.scss";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  font-size: 16px;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  // background: $color-back-background;
+  background: linear-gradient(#bbbd, #bbbd),
+              no-repeat top /100% fixed url("./assets/bg.jpg");
+  color: $color-main-text;
+  font-family: $font-body;
+}
+textarea {
+  font-family: $font-body;
+}
+p {
+  margin: 0;
+}
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: $font-headers;
+  line-height: 1.15;
+}
+h1 {
+  font-size: 2rem;
+  color: $color-primary;
+  text-align: center;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+.main-wrapper {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 3%;
+}

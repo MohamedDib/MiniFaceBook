@@ -1,0 +1,32 @@
+<header class="header">
+  <div class="main-wrapper header--wrapper">
+    <div>
+      <a routerLink="/home" aria-label="Retour vers la page d'accueil">
+        <img  class="header--logo" src="./assets/logo.png" alt="Logo de Groupomania">
+      </a>
+    </div>
+
+    <!-- Si l'utilisateur n'est pas encore loggé -->
+    <nav *ngIf="!authService.user" class="header--nav">
+      <a routerLink="/login">S'identifier</a>
+      <a routerLink="/signin">S'inscrire</a>
+    </nav>
+
+    <!-- Si l'utilisateur est loggé -->
+    <nav *ngIf="authService.user" class="header--nav">
+      <a routerLink="/users" aria-label="Équipe" title="Voir l'équipe">
+        <i class="fas fa-users"></i>
+      </a>
+      <a routerLink="/notifs" aria-label="Notifications" title="Mes notifications" class="header--nav--notifs">
+        <i class="fas fa-bolt"></i>
+        <div class="header--nav--notifs--number" *ngIf="notificationsService.notifications.length > 0">{{notificationsService.notifications.length}}</div>
+      </a>
+      <a routerLink="/profile/{{authService.user.userId}}" class="header--nav--profile" title="Mon profil">
+        <img [src]="authService.user.pictureUrl === null ? './assets/anonymousUser.svg' : authService.user.pictureUrl" alt="Photo de profil">
+      </a>
+      <a routerLink="/logoff" aria-label="Se déconnecter" title="Se déconnecter" (click)="onLogout()">
+        <i class="fas fa-power-off"></i>
+      </a>
+    </nav>
+  </div>
+</header>
