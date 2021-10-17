@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 17, 2021 at 03:55 PM
+-- Generation Time: Oct 17, 2021 at 10:11 PM
 -- Server version: 5.7.31
 -- PHP Version: 7.4.9
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   PRIMARY KEY (`id`),
   KEY `fk_Comments_Users_id` (`user_id`),
   KEY `fk_Comments_Posts_id` (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `comments`
@@ -50,7 +50,8 @@ INSERT INTO `comments` (`id`, `content`, `user_id`, `post_id`, `comment_date`) V
 (13, 'Omitto iuris dictionem in libera civitate contra leges senatusque consulta; caedes relinquo; libidines praetereo, quarum acerbissimum extat indicium et ad insignem memoriam turpitudinis et paene ad iustum odium imperii nostri, quod constat nobilissimas virgines se in puteos abiecisse et morte voluntaria necessariam turpitudinem depulisse. Nec haec idcirco omitto, quod non gravissima sint, sed quia nunc sine teste dico.', 13, 1, '2020-09-24 11:36:12'),
 (26, 'Très joli bleu!..', 13, 1, '2020-09-28 14:40:31'),
 (28, 'test', 16, 2, '2020-10-03 20:17:37'),
-(29, 'Fuck', 21, 1, '2021-10-16 21:45:13');
+(29, 'Fuck', 21, 1, '2021-10-16 21:45:13'),
+(36, 'zeeb', 25, 14, '2021-10-17 23:30:36');
 
 -- --------------------------------------------------------
 
@@ -97,17 +98,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
   PRIMARY KEY (`id`),
   KEY `fk_Likes_Users_id` (`user_id`),
   KEY `fk_Likes_Posts_id` (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `likes`
---
-
-INSERT INTO `likes` (`id`, `user_id`, `post_id`) VALUES
-(1, 16, 1),
-(2, 16, 2),
-(3, 13, 1),
-(4, 13, 2);
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -125,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `privacy` varchar(250) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_Posts_Users_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `posts`
@@ -133,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
 
 INSERT INTO `posts` (`id`, `user_id`, `picture`, `description`, `post_date`, `privacy`) VALUES
 (1, 11, 'http://localhost:3000/images/Walter\'s_Work_1600805964762.png', 'I have spent my whole life scared, frightened of things that could happen, might happen, might not happen, 50 years I spent like that. Finding myself awake at three in the morning. But you know what? Ever since my diagnosis, I sleep just fine. What I came to realize is that fear, that’s the worst of it. That’s the real enemy. So, get up, get out in the real world and you kick that bastard as hard you can right in the teeth.', '2021-10-12 21:12:12', 'pv'),
-(2, 13, 'http://localhost:3000/images/Walter\'s_Work_1600853648683.png', 'I have spent my whole life scared, frightened of things that could happen, might happen, might not happen, 50 years I spent like that. Finding myself awake at three in the morning. But you know what? Ever since my diagnosis, I sleep just fine. What I came to realize is that fear, that’s the worst of it. That’s the real enemy. So, get up, get out in the real world and you kick that bastard as hard you can right in the teeth.', '2021-10-12 21:12:12', 'fr'),
+(2, 13, 'http://localhost:3000/images/Walter\'s_Work_1600853648683.png', 'Test,I have spent my whole life scared, frightened of things that could happen, might happen, might not happen, 50 years I spent like that. Finding myself awake at three in the morning. But you know what? Ever since my diagnosis, I sleep just fine. What I came to realize is that fear, that’s the worst of it. That’s the real enemy. So, get up, get out in the real world and you kick that bastard as hard you can right in the teeth.', '2021-10-12 21:12:12', 'pb'),
 (7, 21, NULL, 'dezfezf ', '2021-10-16 22:47:28', 'fr'),
 (8, 21, NULL, 'nnnnnnn', '2021-10-16 22:47:53', 'fr'),
 (9, 21, NULL, 'fuuuuuuuuuuuuuuuuuuuuuuck', '2021-10-16 22:48:25', 'pv'),
@@ -200,7 +191,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `tel`, `address`, `description`, `pa
 (19, 'Hatim Sadeq', 'hatimas@email.com', NULL, NULL, NULL, 'U2FsdGVkX1+BEfjMI4n429kSOTzgZc4QnyQqPok5Dx+OYOxuYXXndAmEkhvkMH24cyix8vJxnlbmameJsEGjWQOrX2Ro/49SXytBdm35k38=', NULL),
 (21, 'user1', 'user1@email.com', NULL, NULL, NULL, 'U2FsdGVkX1/21yJGyVR9btJJP5BzcjxNmmzC0BkDMjfIJ/+X2Zn/flCtOn5U+ESEES94SFik1W56GftlqrEXzc0/vMpqc75ZF5e7fPD95Uk=', NULL),
 (22, 'user2', 'user2@email.com', NULL, NULL, NULL, 'U2FsdGVkX19ACBsYUb/uHq7wSwtsvjkEwklZd0eJ6f+gbPqIPn6brjdpa+/JqAvqz8hNo2C2/CXQnP4VMTbl3SXIk33FjOBEvvwR/QnkMGQ=', NULL),
-(25, 'User3', 'user3@email.com', NULL, NULL, NULL, 'U2FsdGVkX1/3yMuP59f+9ml0EOnSfIf0a/2bVcTHFQGYSg6Zcw6nW3lIi5XjG/Fbkz9F+Mp6+lyh29RiIQX5bHxe+t/wgR8oc/y7RC1mRak=', NULL);
+(25, 'User3', 'user3@email.com', NULL, NULL, 'I have somthing to say !', 'U2FsdGVkX18yaufajTusrPClit48VQ1BVfpIUTHX8QhpHNmbHo1WLOfYntQqVk9/FOovpsEusyNyoEpAspc6dybuvoWpMmCybZUKINyYPwk=', 'http://localhost:3000/images/Roar_1634494960752.png');
 
 --
 -- Constraints for dumped tables
