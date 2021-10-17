@@ -1,6 +1,5 @@
-backend/node_modules
-backend/.env
+api/node_modules
 
-backend/access.log
+api/access.log
 
 frontend/node_modules
