@@ -26,13 +26,15 @@ const fileFilter = (req, file, callback) => {
   callback(null, true);
 };
 
-let upload = multer({ storage, fileFilter }).single('image');
+let upload = multer({ storage, fileFilter }).single('picture');
 
 module.exports = (req, res, next) => {
 upload(req, res, (err) => {
     if (err) {
       // erreur lors de l'upload (erreur de type de fichier notamment)
-      return res.status(500).json({ error: "Une erreur s'est produite" });
+      console.log("Erreur :");
+      console.log(err);
+      return res.status(500).json({ error: "Une erreur s'est produite 1" });
     }
     next();
   });

@@ -51,11 +51,32 @@ exports.getCommentsOfEachPosts = (posts, connection) => {
         if (error) {
           reject(error);
         } else {
+
           resolve({ ...post, comments });
         }
       });
     })
   }));
+}
+
+exports.setIsFriend = (post, connection,currentUserId) => {
+
+    const sql= "SELECT COUNT(*) AS isFriend FROM `friends` WHERE (`id_user1` = ? AND id_user2 = ?) OR (`id_user2` =? AND id_user1 = ?)";
+    const sqlParams = [currentUserId, post.userId, post.userId, currentUserId];
+    console.log("Current user :",currentUserId);
+    console.log("Post user :",post.userId);
+
+    return new Promise((resolve, reject) => {
+      connection.execute(sql, sqlParams, (error, results, fields) => {
+        if (error) {
+          reject(error);
+        } else {
+          //post.isFriend = results[0].isFriend
+          console.log("Is friend :",results[0].isFriend);
+          resolve({ ...post,isFriend : results[0].isFriend});
+        }
+      });
+    });
 }
 
 // Fonction utilitaire : Récupérer les like/dislikes des posts
@@ -74,7 +95,20 @@ exports.getLikesOfEachPosts = (posts, userId, connection) => {
         if (error) {
           reject(error);
         } else {
-          resolve({ ...post, likes: result[0] });
+          const conn2 = database.connect();
+
+          const sql2= "SELECT COUNT(*) AS isFriend FROM `friends` WHERE (`id_user1` = ? AND id_user2 = ?) OR (`id_user2` =? AND id_user1 = ?)";
+          const sqlParams2 = [userId, post.userId, post.userId, userId];
+
+          conn2.execute(sql2, sqlParams2, (error2, result2, fields2) => {
+            if (error) {
+              reject(error);
+            } else {
+              //post.isFriend = result2[0].isFriend;
+              console.log(result2 )
+              resolve({ ...post, likes: result[0] });
+            }
+          })
         }
       });
     })
@@ -120,6 +154,7 @@ exports.getAllPosts = (req, res, next) => {
  */
 exports.getSomePosts = (req, res, next) => {
   const connection = database.connect();
+  const connection2 = database.connect();
   // 1: récupération des posts recherchés
   const limit = parseInt(req.params.limit);
   const offset = parseInt(req.params.offset);
@@ -129,22 +164,26 @@ exports.getSomePosts = (req, res, next) => {
   ORDER BY postDate DESC\
   LIMIT ? OFFSET ?;";
   const sqlParams = [limit, offset];
+
+
   connection.execute(sql, sqlParams, (error, rawPosts, fields) => {
     if (error) {
       connection.end();
       res.status(500).json({ "error": error.sqlMessage });
     } else {
-      // 2: Pour chaque post, on va chercher tous les commentaires du post
-      this.getCommentsOfEachPosts(rawPosts, connection)
-        .then(postsWithoutLikes => {
-          // 3: Pour chaque post, on rajoute les likes/dislikes
-          const cryptedCookie = new Cookies(req, res).get('snToken');
-          const userId = JSON.parse(cryptojs.AES.decrypt(cryptedCookie, process.env.COOKIE_KEY).toString(cryptojs.enc.Utf8)).userId;
-          this.getLikesOfEachPosts(postsWithoutLikes, userId, connection)
-            .then(posts => {
-              res.status(200).json({ posts });
+        // 3: Pour chaque post, on rajoute les likes/dislikes
+        // 2: Pour chaque post, on va chercher tous les commentaires du post
+        this.getCommentsOfEachPosts(rawPosts, connection)
+            .then(postsWithoutLikes => {
+              // 3: Pour chaque post, on rajoute les likes/dislikes
+              const cryptedCookie = new Cookies(req, res).get('snToken');
+              const userId = JSON.parse(cryptojs.AES.decrypt(cryptedCookie, process.env.COOKIE_KEY).toString(cryptojs.enc.Utf8)).userId;
+              this.getLikesOfEachPosts(postsWithoutLikes, userId, connection)
+                  .then(posts => {
+                    res.status(200).json({ posts });
+                  })
             })
-        })
+
     }
   });
 }

@@ -54,11 +54,11 @@
     </div>
   </section>
 
-  <!-- LISTE DES DERNIERES PUBLICATIONS -->
+  <!-- LAST POSTS (FRIENDS OR PUBLIC)) -->
 
   <section class="publications--list">
     <article *ngFor="let post of posts">
-      <div *ngIf="post.postPrivacy !== 'pv'">
+      <div *ngIf="((post.postPrivacy !== 'pv') || ( post.userId === authService.user.id && post.postPrivacy === 'pv')) ">
         <!-- Header Publication : photo de profil, nom, date, et delete -->
         <header>
           <div>

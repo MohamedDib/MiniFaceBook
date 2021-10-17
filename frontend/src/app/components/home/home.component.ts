@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit {
    * Publication d'un nouveau post
    */
   public onSubmitNewPost(event: Event): void {
-    const content: string = event.target[0].value;
+    const content: string = event.target[2].value;
     const privacy: string = event.target[1].value;
     const base64Image = this.imageService.croppedImage;
     const formData = new FormData();
@@ -92,7 +92,8 @@ export class HomeComponent implements OnInit {
     formData.append('description', content);
 
     formData.append('privacy', privacy);
-
+    console.log("Image :",content);
+    console.log("Privacy :",privacy);
     this.publicationsService.newPublication(formData)
       .subscribe((response: HttpResponse) => {
         if (response.status === 201) {

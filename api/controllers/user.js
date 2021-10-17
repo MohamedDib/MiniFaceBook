@@ -352,7 +352,7 @@ exports.changeProfilePicture = (req, res, next) => {
   const connection = database.connect();
   const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
   const userId = req.params.id;
-  const sql = "UPDATE Users SET pictureurl=? WHERE id=?";
+  const sql = "UPDATE Users SET picture=? WHERE id=?";
   const sqlParams = [imageUrl, userId];
   connection.execute(sql, sqlParams, (error, results, fields) => {
     if (error) {

@@ -163,7 +163,7 @@ export class ProfileComponent implements OnInit {
     const base64Image = this.imageService.croppedImage;
     const image = this.imageService.base64ToFile(base64Image, this.imageService.initialImage.name);
     const uploadData = new FormData();
-    uploadData.append('image', image);
+    uploadData.append('picture', image);
     this.usersService.updatePicture(this.userDetails.id, uploadData)
       .subscribe((response: HttpResponse) => {
         if (response.status === 201) {
