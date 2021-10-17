@@ -12,6 +12,7 @@ interface User {
   id: number;
   name: string;
   pictureurl: string;
+  description: string;
 }
 
 @Injectable({

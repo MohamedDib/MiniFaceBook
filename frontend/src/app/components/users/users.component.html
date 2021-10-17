@@ -17,8 +17,11 @@
       class="users--display--card" >
       <img [src]="user.picture===null ? './assets/anonymousUser.svg' : user.picture "
       alt="Picture of {{user.name}}">
+      <div class="friend-badge">
+        <i class="fas fa-user-friends " ></i>
+      </div>
       <p>{{user.name}}</p>
-      <i class="fas fa-user-friends friend-badge" ></i>
     </a>
+
   </section>
 </main>
