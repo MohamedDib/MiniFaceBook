@@ -27,9 +27,12 @@ export class LikesService {
   }
 
   public newRatePublication(postId: number): Observable<HttpResponse> {
+
     return this.httpClient.post(`${this.likeUrl}`, {postId}, { withCredentials: true, observe: 'response' })
       .pipe(catchError(err => {
+
         this.log(`Erreur: ${err.statusText}`);
+        console.log("Erreur :",err.statusText);
         return of(err);
       }));
   }

@@ -38,6 +38,8 @@ export class PostComponent implements OnInit {
   private getPublication(): void {
     this.publicationsService.getOnePublication(this.postId)
       .subscribe((response: HttpResponse) => {
+
+        console.log(response.body);
         if (response.status === 200) {
           this.post = response.body.post[0];
         } else {
@@ -61,6 +63,8 @@ export class PostComponent implements OnInit {
 
   public onlike(event: Event): void {
     const postId = this.postId;
+
+    console.log("response.status");
     //const rate: number = parseInt(event.target[1].value, 10);
     this.likesService.newRatePublication(postId)
       .subscribe((response: HttpResponse) => {
