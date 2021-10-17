@@ -6,6 +6,7 @@ import { MessagesService } from 'src/app/services/messages.service';
 
 
 import { UsersService } from '../../services/users.service';
+import {UserDetails} from '../../interfaces/UserDetails.interface';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { UsersService } from '../../services/users.service';
 export class UsersComponent implements OnInit {
 
   private searchTerms = new Subject<string>();
+  public userDetails: UserDetails;
 
   constructor(
     public usersService: UsersService,

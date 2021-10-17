@@ -165,7 +165,7 @@ export class HomeComponent implements OnInit {
   public onlike(event: Event): void {
     const postId: number = parseInt(event.target[0].value, 10);
     const rate: number = parseInt(event.target[1].value, 10);
-    this.likesService.newRatePublication(postId, rate)
+    this.likesService.newRatePublication(postId)
       .subscribe((response: HttpResponse) => {
         if (response.status === 201) {
           this.getPostsFromStart(this.posts.length);

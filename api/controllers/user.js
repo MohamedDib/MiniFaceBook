@@ -371,7 +371,7 @@ exports.changeOutline = (req, res, next) => {
   const connection = database.connect();
   const outline = req.body.outline;
   const userId = req.params.id;
-  const sql = "UPDATE Users SET outline=? WHERE id=?";
+  const sql = "UPDATE Users SET description=? WHERE id=?";
   const sqlParams = [outline, userId];
   connection.execute(sql, sqlParams, (error, results, fields) => {
     if (error) {
