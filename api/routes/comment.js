@@ -9,6 +9,6 @@ const credential = require('../middlewares/credential')
 
 router.post('/', auth, validate.comment, commentCtrl.newComment);
 router.get('/', auth, validate.postId, commentCtrl.getCommentsofPost);
-router.delete('/:id', auth, validate.id, credential.deleteComment, commentCtrl.deleteComment);
+router.delete('/:id', auth, validate.id, commentCtrl.deleteComment);
 
 module.exports = router;

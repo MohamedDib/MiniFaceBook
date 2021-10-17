@@ -38,10 +38,13 @@ export class PostComponent implements OnInit {
   private getPublication(): void {
     this.publicationsService.getOnePublication(this.postId)
       .subscribe((response: HttpResponse) => {
+
+        console.log(response.body);
         if (response.status === 200) {
           this.post = response.body.post[0];
         } else {
           this.messagesService.add(`Erreur: Impossible de récupérer la publication`);
+          alert(`Erreur: Impossible de récupérer la publication`);
         }
       });
   }
@@ -60,8 +63,10 @@ export class PostComponent implements OnInit {
 
   public onlike(event: Event): void {
     const postId = this.postId;
-    const rate: number = parseInt(event.target[1].value, 10);
-    this.likesService.newRatePublication(postId, rate)
+
+    console.log("response.status");
+    //const rate: number = parseInt(event.target[1].value, 10);
+    this.likesService.newRatePublication(postId)
       .subscribe((response: HttpResponse) => {
         if (response.status === 201) {
           this.getPublication();

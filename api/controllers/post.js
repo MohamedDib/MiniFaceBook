@@ -95,7 +95,7 @@ exports.getLikesOfEachPosts = (posts, userId, connection) => {
         if (error) {
           reject(error);
         } else {
-          const conn2 = database.connect();
+          /*const conn2 = database.connect();
 
           const sql2= "SELECT COUNT(*) AS isFriend FROM `friends` WHERE (`id_user1` = ? AND id_user2 = ?) OR (`id_user2` =? AND id_user1 = ?)";
           const sqlParams2 = [userId, post.userId, post.userId, userId];
@@ -108,7 +108,8 @@ exports.getLikesOfEachPosts = (posts, userId, connection) => {
               console.log(result2 )
               resolve({ ...post, likes: result[0] });
             }
-          })
+          })*/
+          resolve({ ...post, likes: result[0] });
         }
       });
     })
@@ -192,7 +193,7 @@ exports.getOnePost = (req, res, next) => {
   const connection = database.connect();
   // 1: récupération des posts recherchés
   const postId = parseInt(req.params.id);
-  const sql = "SELECT Posts.id AS postId, Posts.publication_date AS postDate, Posts.imageurl AS postImage, Posts.content as postContent, Users.id AS userId, Users.name AS userName, Users.pictureurl AS userPicture\
+  const sql = "SELECT Posts.id AS postId, Posts.post_date AS postDate, Posts.picture AS postImage, Posts.description as postContent, Users.id AS userId, Users.name AS userName, Users.picture AS userPicture\
   FROM Posts\
   INNER JOIN Users ON Posts.user_id = Users.id\
   WHERE Posts.id = ?\
