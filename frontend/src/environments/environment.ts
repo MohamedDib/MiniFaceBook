@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  backendServer: 'http://localhost:3000'
+  //backendServer: 'http://localhost:3000'
+  backendServer: 'https://minifb-api.herokuapp.com/'
 };
 
 /*
