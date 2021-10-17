@@ -1,0 +1,62 @@
+<main class="main-wrapper">
+  <div class="login-container">
+  <div class="login">
+    <form class="login--form" [formGroup]='signInForm' (ngSubmit)="onSubmit()">
+      <h1>Join us !</h1>
+
+      <!--<fieldset>
+        <label for="name">Nom</label>
+        <input id="name" type="name" formControlName="name">
+      </fieldset>-->
+      <fieldset>
+        <div class="form__group field">
+          <input id="name" type="name" formControlName="name"  class="form__field" placeholder="Name" name="name"  required />
+          <label for="name" class="form__label">Name</label>
+        </div>
+      </fieldset>
+      <!--<fieldset>
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email">
+      </fieldset>-->
+      <fieldset>
+        <div class="form__group field">
+          <input id="email" type="email" formControlName="email" class="form__field" placeholder="Name" name="name" required />
+          <label for="name" class="form__label">Email</label>
+        </div>
+      </fieldset>
+      <!--<fieldset>
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" formControlName="password">
+      </fieldset>-->
+      <fieldset>
+        <div class="form__group field">
+          <input id="password" type="password" formControlName="password" class="form__field" placeholder="Name" name="name" required />
+          <label for="name" class="form__label">Password</label>
+        </div>
+      </fieldset>
+      <!--<fieldset>
+        <label for="passwordConfirmation">Confirmer le mot de passe</label>
+        <input id="passwordConfirmation" type="password" formControlName="passwordConfirmation">
+      </fieldset>-->
+      <fieldset>
+        <div class="form__group field">
+          <input id="passwordConfirmation" type="password" formControlName="passwordConfirmation" class="form__field" placeholder="Name" name="name" required />
+          <label for="name" class="form__label">Confirm your password</label>
+        </div>
+      </fieldset>
+      <button class="btn" type="submit" [disabled]="signInForm.invalid">Sign Up</button>
+    </form>
+    <p>Already signed up ? <a routerLink="/login">Sign In !</a></p>
+  </div>
+    <div class="paoli-book">
+      <div class="p-logo">
+        <img src="./assets/logo-2.svg" >
+      </div>
+      <div class="pb-decription">
+        <h2> PaoliBook,  connect with friends...</h2>
+        <h2> And say good buy to FaceBook!</h2>
+      </div>
+
+    </div>
+  </div>
+</main>

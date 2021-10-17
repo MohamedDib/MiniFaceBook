@@ -1,0 +1,43 @@
+<main class="main-wrapper">
+<div class="login-container">
+  <div class="login">
+    <form class="login--form" [formGroup]='signInForm' (ngSubmit)="onSubmit()">
+      <h1>Log In</h1>
+      <!--<fieldset>
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email">
+      </fieldset>-->
+      <fieldset>
+        <div class="form__group field">
+          <input id="email" type="email" formControlName="email"  class="form__field" placeholder="Name" name="name" id='name' required />
+          <label for="name" class="form__label">Email</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="form__group field">
+          <input id="password" type="password" formControlName="password"  class="form__field" placeholder="Name" name="name"  required />
+          <label for="name" class="form__label">Password</label>
+        </div>
+      </fieldset>
+      <!--<fieldset>
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" formControlName="password">
+      </fieldset>-->
+      <button class="btn" type="submit" [disabled]="signInForm.invalid">log In</button>
+    </form>
+    <p> <a >Forgot Password ?</a></p>
+    <p> Not a member yet ? <a routerLink="/signin">Ceate an account</a></p>
+  </div>
+  <div class="paoli-book">
+    <div class="p-logo">
+      <img src="./assets/logo-2.svg" >
+    </div>
+    <div class="pb-decription">
+      <h2> PaoliBook,  connect with friends...</h2>
+      <h2> And say good buy to FaceBook!</h2>
+    </div>
+
+  </div>
+</div>
+
+</main>

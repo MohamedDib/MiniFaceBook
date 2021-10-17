@@ -1,0 +1,33 @@
+<header class="header">
+  <div class="main-wrapper header--wrapper">
+    <div>
+      <a routerLink="/home" aria-label="Retour vers la page d'accueil">
+        <img  class="header--logo" src="./assets/logo.svg" alt="Paoli Logo">
+      </a>
+    </div>
+
+    <!-- Si l'utilisateur n'est pas encore loggé -->
+    <nav *ngIf="!authService.user" class="header--nav">
+      <a routerLink="/login">Log In</a>
+      <a routerLink="/signin">Sign Up</a>
+    </nav>
+
+    <!-- Si l'utilisateur est loggé -->
+    <nav *ngIf="authService.user" class="header--nav">
+      <a routerLink="/users" aria-label="Équipe" title="Discover people">
+        <i class="fas fa-user-friends"></i>
+      </a>
+      <!--<a routerLink="/notifs" aria-label="Notifications" title="Mes notifications" class="header--nav--notifs">
+        <i class="fas fa-bolt"></i>
+        <div class="header--nav--notifs--number" *ngIf="notificationsService.notifications.length > 0">{{notificationsService.notifications.length}}</div>
+      </a>-->
+      <a routerLink="/logoff" aria-label="Se déconnecter" title="Se déconnecter" (click)="onLogout()">
+        <i class="fas fa-power-off"></i>
+      </a>
+      <a routerLink="/profile/{{authService.user.id}}" class="header--nav--profile" title="Mon profil">
+        <img [src]="authService.user.picture === null ? './assets/anonymousUser.svg' : authService.user.picture" alt="Photo de profil">
+      </a>
+
+    </nav>
+  </div>
+</header>

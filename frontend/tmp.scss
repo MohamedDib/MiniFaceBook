@@ -1,0 +1,14 @@
+.btn {
+  display: block;
+  margin: auto;
+  padding: 0.9em 2.3em;
+  background: $color-primary-lighter;
+  border: none;
+  //border: 1px solid $color-primary;
+  //border-radius: 5px;
+  color: $color-primary;
+  cursor: pointer;
+  &:hover {
+    background: $color-primary-light;
+  }
+}

@@ -1,0 +1,78 @@
+@import "../../../variables.scss";
+.hidden {
+  display: none;
+}
+
+.friend-badge{
+  color: $color-primary-light;
+  margin-left: 0%;
+  padding-left: 1em;
+}
+.users {
+  h1 {
+    text-align: center;
+  }
+  &--search {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+
+    margin: 2em auto;
+    padding: 0.5em 1em;
+    max-width: 650px;
+
+    border: 0px solid $color-primary;
+    border-radius: 0em;
+    background: $color-cards-background;
+    overflow: hidden;
+    box-shadow: $shadow-light;
+
+    label {
+      font-size: 1.3em;
+      margin-right: 1em;
+      color: $color-primary;
+    }
+    input {
+      width: 100%;
+      height: 2.5em;
+      border: none;
+      background: none;
+      &:focus {
+        border: none;
+      }
+      &:hover {
+        border: none;
+      }
+    }
+  }
+
+  &--display {
+    display: grid;
+    flex-flow: row wrap;
+    justify-content: space-around;
+
+
+    a {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      width: 100%;
+      margin: 1em 1.5em;
+      padding: 0.5em;
+      //border-radius: 10px;
+      box-shadow: $shadow-light;
+      background: $color-cards-background;
+      transition: transform 200ms;
+      &:hover {
+        transform: scale(1.03);
+      }
+    }
+    img {
+      border-radius: 50%;
+      max-width: 75px;
+      max-height: 75px;
+      margin-right: 2em;
+      flex-shrink: 0;
+    }
+  }
+}

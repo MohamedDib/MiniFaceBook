@@ -1,0 +1,24 @@
+<main class="main-wrapper users">
+  <!--<h1>Discover people</h1>-->
+  <section class="users--search">
+
+    <input
+      id="search-user"
+      type="text"
+      placeholder="Search for a user"
+      aria-label="Search for a user"
+      #searchBox
+      (input)="searchUser(searchBox.value)">
+    <label for="search-user" style="margin-right: 0% !important;"><i class="fas fa-search"></i><span class="hidden">Search for a user</span></label>
+  </section>
+  <section class="users--display">
+    <a *ngFor="let user of usersService.users"
+      [routerLink]="'/profile/' + user.id"
+      class="users--display--card" >
+      <img [src]="user.picture===null ? './assets/anonymousUser.svg' : user.picture "
+      alt="Picture of {{user.name}}">
+      <p>{{user.name}}</p>
+      <i class="fas fa-user-friends friend-badge" ></i>
+    </a>
+  </section>
+</main>

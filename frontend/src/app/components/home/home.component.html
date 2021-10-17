@@ -1,0 +1,164 @@
+<main class="main-wrapper publications">
+  <!--<h1>Dernières publications</h1>-->
+
+  <!-- AJOUT D'UNE PUBLICATION -->
+
+  <section class="publications--add">
+    <form (submit)="onSubmitNewPost($event)">
+      <h2>Share with us</h2>
+
+    <p style="visibility: hidden;">.</p>
+      <p class="buttons">
+        <label for="addPub-image" class="btn" style="margin-left: 0% !important; width: 80% !important;">Choose a picture
+          <input type="file" id="addPub-image" (change)="imageService.fileChangeEvent($event)">
+        </label>
+
+        <select name="privacy" class="select">
+          <option value=""
+                  hidden
+          >Choose visibility</option>
+
+          <option value="pb">Public</option>
+          <option value="fr">Amis</option>
+          <option value="pv">Privé</option>
+        </select>
+
+      </p>
+
+      <p>
+        <img [src]="imageService.croppedImage" class="image-preview" alt="">
+      </p>
+
+      <p class="">
+        <label for="addPub-content" class="hidden">Votre contenu de publication</label>
+        <textarea name="addPub-content" placeholder="Add a caption" id="addPub-content"></textarea>
+      </p>
+
+      <p>
+        <button type="submit" class="btn" style="margin-right: 0% !important;">Publier !</button>
+      </p>
+    </form>
+    <!-- div de redimensionnement de l'image -->
+    <div id="cropper" class="cropper hidden">
+      <image-cropper
+        class="profile--cropper--preview"
+        [imageChangedEvent]="imageService.imageChangedEvent"
+        [maintainAspectRatio]="false"
+        format="png"
+        resizeToWidth="800"
+        (imageCropped)="imageService.imageCropped($event)"
+        (imageLoaded)="imageService.imageLoaded()"
+        (loadImageFailed)="imageService.loadImageFailed()"
+    ></image-cropper>
+    <button class="btn" (click)="imageService.onCroppedImageDone()">Ok</button>
+    </div>
+  </section>
+
+  <!-- LISTE DES DERNIERES PUBLICATIONS -->
+
+  <section class="publications--list">
+    <article *ngFor="let post of posts">
+      <div *ngIf="post.postPrivacy !== 'pv'">
+        <!-- Header Publication : photo de profil, nom, date, et delete -->
+        <header>
+          <div>
+            <a routerLink="/profile/{{post.userId}}">
+              <img
+                [src]="post.userPicture===null ? './assets/anonymousUser.svg' : post.userPicture"
+                alt="Photo de profil de {{post.userName}}">
+            </a>
+          </div>
+          <div class="text">
+            <p class="name">
+              <a routerLink="/profile/{{post.userId}}">{{post.userName}}</a>
+            </p>
+            <p class="date">
+              Publié le {{post.postDate | date: "dd/MM/y à HH:mm" : "UTC+2"}}
+            </p>
+          </div>
+          <form
+            class="delete-post"
+            *ngIf="post.userId === authService.user.id"
+            (submit)="onDeletePublication($event)">
+            <input type="hidden" name="PostId" [value]="post.postId">
+            <button type="submit" aria-label="Supprimer la publication"><i class="fas fa-trash"></i></button>
+          </form>
+        </header>
+        <!-- Main Publication : Photo et/ou contenu -->
+        <main>
+          <div *ngIf="post.postImage !== null" class="picture">
+            <img [src]="post.postImage" alt="Photo de la publication">
+          </div>
+          <div *ngIf="post.postContent !== null" class="content">
+            <p>{{post.postContent}}</p>
+          </div>
+        </main>
+        <!-- Footer Publication : likes et commentaires -->
+        <footer>
+          <div class="likes">
+            <form (submit)="onlike($event)">
+              <input type="hidden" name="postId" [value]="post.postId">
+              <input type="hidden" name="rate" [value]="post.likes.currentUserReaction === 1 ? 0 : 1">
+              <button type="submit" [ngClass]="post.likes.currentUserReaction === 1 ? 'alreadyLiked' : ''" aria-label="like la publication">
+                <i class="fas fa-heart" style="margin-right: 10%;"></i>
+                {{post.likes.LikesNumber}}
+              </button>
+            </form>
+           <!-- <form (submit)="onlike($event)">
+              <input type="hidden" name="postId" [value]="post.postId">
+              <input type="hidden" name="rate" [value]="post.likes.currentUserReaction === -1 ? 0 : -1">
+              <button type="submit" [ngClass]="post.likes.currentUserReaction === -1 ? 'alreadyDisliked' : ''" aria-label="dislike la publication">
+                <i class="fas fa-thumbs-down"></i>
+                {{post.likes.DislikesNumber}}
+              </button>
+            </form>-->
+          </div>
+
+          <div class="comments">
+            <!--<h3>Commentaires</h3>-->
+            <div *ngFor="let comment of post.comments" class="comments--comment">
+              <div>
+                <img
+                  [src]="comment.userPicture===null ? './assets/anonymousUser.svg' : comment.userPicture"
+                  alt="Photo de profil de {{comment.userName}}">
+              </div>
+              <div class="comments--comment--fluid">
+                <p class="title">
+                  <span>{{comment.userName}}</span> le {{comment.commentDate | date: "dd/MM/y à HH:mm" : "UTC+2"}}
+                </p>
+                <p>
+                  {{comment.commentContent}}
+                </p>
+              </div>
+              <form
+                class="comments--comment--delete"
+                *ngIf="comment.userId === authService.user.id"
+                (submit)="onDeleteComment($event)">
+                <input type="hidden" name="PostId" [value]="comment.commentId">
+                <button type="submit" aria-label="Supprimer le commentaire"><i class="fas fa-trash"></i></button>
+              </form>
+            </div>
+            <form class="comments--add" (submit)="onAddComment($event)">
+              <img [src]="authService.user.picture===null ? './assets/anonymousUser.svg' : authService.user.picture" alt="Votre photo de profil">
+              <label [for]="'add-comment-' + post.postId" class="hidden">Votre commentaire</label>
+              <input [id]="'add-comment-' + post.postId" type="text" placeholder="Votre commentaire">
+              <input type="hidden" name="postId" [value]="post.postId">
+              <button type="submit" aria-label="Envoyer"><i class="fas fa-caret-right"></i></button>
+            </form>
+          </div>
+        </footer>
+      </div>
+
+    </article>
+  </section>
+
+  <div
+      class="search-results"
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="onScroll()"
+    ></div>
+
+</main>
+
