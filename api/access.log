@@ -6690,3 +6690,6 @@
 ::1 - - [17/Oct/2021:21:52:10 +0000] "GET /api/post/10/0 HTTP/1.1" 200 5521 "http://localhost:4200/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.47"
 ::1 - - [17/Oct/2021:21:52:15 +0000] "GET /api/post/2/10 HTTP/1.1" 200 12 "http://localhost:4200/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.47"
 ::1 - - [17/Oct/2021:21:52:43 +0000] "GET /api/user/logout HTTP/1.1" 304 - "http://localhost:4200/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.47"
+::1 - - [17/Oct/2021:22:36:26 +0000] "GET /api/user/currentuser HTTP/1.1" 401 38 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.47"
+::1 - - [17/Oct/2021:22:36:26 +0000] "GET /api/user/isauth HTTP/1.1" 401 38 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.47"
+::1 - - [17/Oct/2021:22:36:32 +0000] "OPTIONS /api/user/login HTTP/1.1" 200 20 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.47"
