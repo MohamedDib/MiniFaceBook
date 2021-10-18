@@ -1,7 +1,13 @@
 # Projet Social Network
 ## Master 2 Développeur full stack
-### Lien projet :
-https://paolibook.netlify.app/login
+#### Lien demo
+https://paolibook.netlify.app/
+
+Le back (node.js) est hébérgé sur Heroku
+Le Front (Angular) est hébérgé sur Netlify
+La base MySQL est hébérgé sur https://www.freesqldatabase.com/
+
+Nous avons encore un soucis CORS policy qui empêche l'acces HTTPRequest
 
 #### Equipe
 - RAMDANI Massinissa
