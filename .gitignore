@@ -1,7 +1,7 @@
 api/node_modules
 api/.env
 api/package-lock.json
-
+.idea/*
 api/access.log
 
 frontend/node_modules
