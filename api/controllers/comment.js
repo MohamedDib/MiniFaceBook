@@ -15,7 +15,7 @@ exports.newComment = (req, res, next) => {
   const postId = req.body.postId;
   const content = req.body.content;
 
-  const sql = "INSERT INTO Comments (user_id, post_id, content)\
+  const sql = "INSERT INTO comments (user_id, post_id, content)\
   VALUES (?, ?, ?);";
   const sqlParams = [userId, postId, content];
 
@@ -44,10 +44,10 @@ exports.getCommentsofPost = (req, res, next) => {
 
   const postId = req.body.postId;
 
-  const sql = "SELECT Comments.id AS commentId, Comments.publication_date AS commentDate, Comments.content As commentContent, Users.id AS userId, Users.name AS userName, Users.pictureurl AS userPicture\
-  FROM Comments\
-  INNER JOIN Users ON Comments.user_id = Users.id\
-  WHERE Comments.post_id = ?";
+  const sql = "SELECT comments.id AS commentId, comments.publication_date AS commentDate, comments.content As commentContent, users.id AS userId, users.name AS userName, users.pictureurl AS userPicture\
+  FROM comments\
+  INNER JOIN users ON comments.user_id = users.id\
+  WHERE comments.post_id = ?";
   const sqlParams = [postId];
 
   connection.execute(sql, sqlParams, (error, comments, fields) => {
@@ -67,7 +67,7 @@ exports.getCommentsofPost = (req, res, next) => {
 exports.deleteComment = (req, res, next) => {
   const connection = database.connect();
   const commentId = parseInt(req.params.id, 10);
-  const sql = "DELETE FROM Comments WHERE id=?;";
+  const sql = "DELETE FROM comments WHERE id=?;";
   const sqlParams = [commentId];
   connection.execute(sql, sqlParams, (error, results, fields) => {
     if (error) {
