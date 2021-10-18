@@ -23,22 +23,21 @@ const app = express();
  * MIDDLEWARES
  */
 // Configuration cors
-/*app.use((req, res, next) => {
-  //res.setHeader('Access-Control-Allow-Origin', 'https://paolibook.netlify.app');
+app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://paolibook.netlify.app');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   res.setHeader('Access-Control-Allow-Credentials', true);
   next();
-});*/
+});
 
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
   //Enabling CORS
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type,Accept, x-client-key, x-client-token, x-client-secret, Authorization");
   next();
-});
+});*/
 
 //app.use(cors());
 
