@@ -90,7 +90,7 @@ exports.login = (req, res, next) => {
           new Cookies(req, res).set('snToken', cryptedCookie, {
             httpOnly: true,
             maxAge: 10600000,  // cookie pendant 1 heure,
-            path: "/",
+            domain: 'minifb-api.herokuapp.com',
             secure: true
           })
 
@@ -115,7 +115,7 @@ exports.logout = (req, res, next) => {
   new Cookies(req, res).set('snToken', "", {
     httpOnly: true,
     maxAge: 5,  // 1ms (= suppression quasi instantannée)
-    path: "/",
+    domain: 'minifb-api.herokuapp.com',
     secure: true
   })
   res.status(200).json({ message: "utilisateur déconnecté" });
@@ -423,7 +423,7 @@ exports.deleteAccount = (req, res, next) => {
       new Cookies(req, res).set('snToken', false, {
         httpOnly: true,
         maxAge: 2000,
-        path: "/",
+        domain: 'minifb-api.herokuapp.com',
         secure: true
       });
       res.status(201).json({ message: 'Utilisateur supprimé' });
