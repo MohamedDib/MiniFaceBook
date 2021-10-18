@@ -24,7 +24,7 @@ exports.register = (req, res, next) => {
 
       // Requete SQL principale
       const sql = "\
-      INSERT INTO Users (name, email, password)\
+      INSERT INTO users (name, email, password)\
       VALUES (?, ?, ?);";
       const sqlParams = [name, email, password];
       
@@ -53,7 +53,7 @@ exports.login = (req, res, next) => {
   const connection = database.connect();
 
   const researchedEmail = req.body.email;
-  const sql = "SELECT * FROM Users WHERE email= ?";
+  const sql = "SELECT * FROM users WHERE email= ?";
   const sqlParams = [researchedEmail];
   // requête préparée de mysql2
   connection.execute(sql, sqlParams, (error, results, fields) => {
@@ -132,7 +132,7 @@ exports.getCurrentUser = (req, res, next) => {
   const cryptedCookie = new Cookies(req, res).get('snToken');
   const cookie = JSON.parse(cryptojs.AES.decrypt(cryptedCookie, process.env.COOKIE_KEY).toString(cryptojs.enc.Utf8));
   const searchId = cookie.userId;
-  const sql = "SELECT * FROM Users WHERE id=?";
+  const sql = "SELECT * FROM users WHERE id=?";
   const sqlParams = [searchId];
   connection.execute(sql, sqlParams, (error, results, fields) => {
     // SI : erreur SQL
@@ -214,7 +214,7 @@ exports.getOneUser = (req, res, next) => {
   const connection = database.connect();
   const connection2 = database.connect();
   const searchId = req.params.id;
-  const sql = "SELECT * FROM Users WHERE id=?";
+  const sql = "SELECT * FROM users WHERE id=?";
   const sqlParams = [searchId];
 
   // FOR SECOND REQUEST
@@ -289,7 +289,7 @@ const isFriend = async (req, res) => {
 exports.searchUsers = (req, res, next) => {
   const connection = database.connect();
   const searchTerm = "%" + req.query.name + "%";
-  const sql = "SELECT id, name, picture FROM Users WHERE name LIKE ?;";
+  const sql = "SELECT id, name, picture FROM users WHERE name LIKE ?;";
   const sqlParams = [searchTerm];
   connection.execute(sql, sqlParams, (error, users, fields) => {
     if (error) {
@@ -308,7 +308,7 @@ exports.changePassword = (req, res, next) => {
   // Vérification que l'ancien mot de passe soit correct
   const connection = database.connect();
   const searchId = req.params.id;
-  const sql = "SELECT password FROM Users WHERE id=?";
+  const sql = "SELECT password FROM users WHERE id=?";
   const sqlParams = [searchId];
   connection.execute(sql, sqlParams, (error, results, fields) => {
     if (error) {
@@ -326,7 +326,7 @@ exports.changePassword = (req, res, next) => {
           bcrypt.hash(req.body.newPassword, 10)
             .then(hash => {
               const newPassword = cryptojs.AES.encrypt(hash, process.env.CRYPT_USER_INFO).toString();
-              const sql2 = "UPDATE Users SET password=? WHERE id=?";
+              const sql2 = "UPDATE users SET password=? WHERE id=?";
               const sqlParams2 = [newPassword, searchId];
               connection.execute(sql2, sqlParams2, (error, results, fields) => {
                 if (error) {
@@ -352,7 +352,7 @@ exports.changeProfilePicture = (req, res, next) => {
   const connection = database.connect();
   const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
   const userId = req.params.id;
-  const sql = "UPDATE Users SET picture=? WHERE id=?";
+  const sql = "UPDATE users SET picture=? WHERE id=?";
   const sqlParams = [imageUrl, userId];
   connection.execute(sql, sqlParams, (error, results, fields) => {
     if (error) {
@@ -371,7 +371,7 @@ exports.changeOutline = (req, res, next) => {
   const connection = database.connect();
   const outline = req.body.outline;
   const userId = req.params.id;
-  const sql = "UPDATE Users SET description=? WHERE id=?";
+  const sql = "UPDATE users SET description=? WHERE id=?";
   const sqlParams = [outline, userId];
   connection.execute(sql, sqlParams, (error, results, fields) => {
     if (error) {
@@ -390,7 +390,7 @@ exports.changeAdmin = (req, res, next) => {
   const connection = database.connect();
   const isadmin = req.body.isadmin;
   const userId = req.params.id;
-  const sql = "UPDATE Users SET isadmin=? WHERE id=?";
+  const sql = "UPDATE users SET isadmin=? WHERE id=?";
   const sqlParams = [isadmin, userId];
   connection.execute(sql, sqlParams, (error, results, fields) => {
     if (error) {
@@ -408,7 +408,7 @@ exports.changeAdmin = (req, res, next) => {
 exports.deleteAccount = (req, res, next) => {
   const connection = database.connect();
   const userId = req.params.id;
-  const sql = "DELETE FROM Users WHERE id=?";
+  const sql = "DELETE FROM users WHERE id=?";
   const sqlParams = [userId];
   connection.execute(sql, sqlParams, (error, results, fields) => {
     if (error) {
@@ -434,9 +434,9 @@ exports.getAllPostsOfUser = (req, res, next) => {
   const connection = database.connect();
   // 1: récupération de tous les posts
   const userId = req.params.id;
-  const sql = "SELECT Posts.id AS postId, Posts.publication_date AS postDate, Posts.imageurl AS postImage, Posts.content as postContent, Users.id AS userId, Users.name AS userName, Users.pictureurl AS userPicture\
+  const sql = "SELECT Posts.id AS postId, Posts.publication_date AS postDate, Posts.imageurl AS postImage, Posts.content as postContent, users.id AS userId, users.name AS userName, users.pictureurl AS userPicture\
   FROM Posts\
-  INNER JOIN Users ON Posts.user_id = Users.id\
+  INNER JOIN users ON Posts.user_id = users.id\
   WHERE Posts.user_id = ?\
   ORDER BY postDate DESC;";
   const sqlParams = [userId];
