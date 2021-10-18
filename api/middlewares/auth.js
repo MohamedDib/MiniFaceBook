@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
 
     const token = jwt.verify(cookie.token, process.env.JWT_KEY);
 
-    if (cookie.userId && cookie.userId !== token.userId) {
+    if (cookie.userId && cookie.userId == token.userId) {
       console.log("User ID non valable");
       throw "User ID non valable";
     } else {
