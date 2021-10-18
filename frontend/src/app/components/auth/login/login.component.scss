@@ -2,9 +2,10 @@
 
 .login-container{
   display: flex;
+  flex-wrap:wrap; //ajouter ca
   justify-content: space-around;
 }
-
+ 
 .paoli-book{
   margin-top: 10%;
 }
