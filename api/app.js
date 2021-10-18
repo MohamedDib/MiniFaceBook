@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
+//app.use(cors());
 
 // Parse le body des requetes en json
 app.use(bodyParser.json());
