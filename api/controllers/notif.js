@@ -9,10 +9,10 @@ exports.getNotifs = (req, res, next) => {
   const cryptedCookie = new Cookies(req, res).get('snToken');
   const userId = JSON.parse(cryptojs.AES.decrypt(cryptedCookie, process.env.COOKIE_KEY).toString(cryptojs.enc.Utf8)).userId;
 
-  const sql = "SELECT Notifications.id, Notifications.post_id AS postId, Users.name AS initiator, Notification_types.name AS type\
+  const sql = "SELECT Notifications.id, Notifications.post_id AS postId, users.name AS initiator, Notification_types.name AS type\
               FROM `Notifications`\
-              INNER JOIN Users\
-                  ON Notifications.initiator_id = Users.id\
+              INNER JOIN users\
+                  ON Notifications.initiator_id = users.id\
               INNER JOIN Notification_types\
                 ON Notifications.type_id = Notification_types.id\
               WHERE user_id = ?";

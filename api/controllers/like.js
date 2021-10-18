@@ -16,7 +16,7 @@ exports.rate = (req, res, next) => {
   //const rate = req.body.rate;
 
   // 1ère requête: suppression des précédentes notations de l'utilisateur pour la publication
-  const sql = "DELETE FROM Likes\
+  const sql = "DELETE FROM likes\
     WHERE (user_id=? AND post_id=?);";
   const sqlParams = [userId, postId];
 
@@ -29,7 +29,7 @@ exports.rate = (req, res, next) => {
 
       if(results.affectedRows === 0){
         // 2ème requête : ajout du like/dislike
-        const sql2 = "INSERT INTO Likes (user_id, post_id)\
+        const sql2 = "INSERT INTO likes (user_id, post_id)\
         VALUES (?, ?);";
         const sqlParams2 = [ userId, postId];
 
@@ -66,9 +66,9 @@ exports.getLikesOfPost = (req, res, next) => {
   const postId = req.body.postId;
 
   const sql = "SELECT\
-  (SELECT COUNT(*) FROM Likes WHERE (post_id=?)) AS LikesNumber,\
-  (SELECT COUNT(*) FROM Likes WHERE (post_id=?)) AS DislikesNumber,\
-  (SELECT COUNT(*) FROM Likes WHERE (post_id=1 AND user_id=?)) AS currentUserReaction";
+  (SELECT COUNT(*) FROM likes WHERE (post_id=?)) AS LikesNumber,\
+  (SELECT COUNT(*) FROM likes WHERE (post_id=?)) AS DislikesNumber,\
+  (SELECT COUNT(*) FROM likes WHERE (post_id=1 AND user_id=?)) AS currentUserReaction";
   const sqlParams = [postId, postId, userId];
 
   connection.execute(sql, sqlParams, (error, result, fields) => {

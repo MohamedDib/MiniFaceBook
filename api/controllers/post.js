@@ -17,7 +17,7 @@ exports.newPost = (req, res, next) => {
   const privacy = req.body.privacy ? req.body.privacy : "pb";
 
   console.log(picture,description,privacy);
-  const sql = "INSERT INTO Posts (user_id, picture, description, privacy)\
+  const sql = "INSERT INTO posts (user_id, picture, description, privacy)\
   VALUES (?, ?, ?, ?);";
   const sqlParams = [userId, picture, description, privacy];
 
@@ -41,10 +41,10 @@ exports.newPost = (req, res, next) => {
 // connection : est la connection déjà ouverte précédemment
 exports.getCommentsOfEachPosts = (posts, connection) => {
   return Promise.all(posts.map(post => {
-    const sql = "SELECT Comments.id AS commentId, Comments.comment_date AS commentDate, Comments.content As commentContent, Users.id AS userId, Users.name AS userName, Users.picture AS userPicture\
-                FROM Comments\
-                INNER JOIN Users ON Comments.user_id = Users.id\
-                WHERE Comments.post_id = ?";
+    const sql = "SELECT comments.id AS commentId, comments.comment_date AS commentDate, comments.content As commentContent, users.id AS userId, users.name AS userName, users.picture AS userPicture\
+                FROM comments\
+                INNER JOIN users ON comments.user_id = users.id\
+                WHERE comments.post_id = ?";
     const sqlParams = [post.postId];
     return new Promise((resolve, reject) => {
       connection.execute(sql, sqlParams, (error, comments, fields) => {
@@ -86,9 +86,9 @@ exports.getLikesOfEachPosts = (posts, userId, connection) => {
   return Promise.all(posts.map(post => {
     const postId = post.postId;
     const sql = "SELECT\
-                (SELECT COUNT(*) FROM Likes WHERE (post_id=? )) AS LikesNumber,\
-                (SELECT COUNT(*) FROM Likes WHERE (post_id=? )) AS DislikesNumber,\
-                (SELECT COUNT(*) FROM Likes WHERE (post_id=? AND user_id=?)) AS currentUserReaction";
+                (SELECT COUNT(*) FROM likes WHERE (post_id=? )) AS LikesNumber,\
+                (SELECT COUNT(*) FROM likes WHERE (post_id=? )) AS DislikesNumber,\
+                (SELECT COUNT(*) FROM likes WHERE (post_id=? AND user_id=?)) AS currentUserReaction";
     const sqlParams = [postId, postId, postId, userId];
     return new Promise((resolve, reject) => {
       connection.execute(sql, sqlParams, (error, result, fields) => {
@@ -120,9 +120,9 @@ exports.getLikesOfEachPosts = (posts, userId, connection) => {
 exports.getAllPosts = (req, res, next) => {
   const connection = database.connect();
   // 1: récupération de tous les posts
-  const sql = "SELECT Posts.id AS postId, Posts.post_date AS postDate, Posts.picture AS postImage, Posts.description as postContent, Users.id AS userId, Users.name AS userName, Users.picture AS userPicture\
-  FROM Posts\
-  INNER JOIN Users ON Posts.user_id = Users.id\
+  const sql = "SELECT posts.id AS postId, posts.post_date AS postDate, posts.picture AS postImage, posts.description as postContent, users.id AS userId, users.name AS userName, users.picture AS userPicture\
+  FROM posts\
+  INNER JOIN users ON posts.user_id = users.id\
   ORDER BY postDate DESC";
   connection.execute(sql, (error, rawPosts, fields) => {
     if (error) {
@@ -159,9 +159,9 @@ exports.getSomePosts = (req, res, next) => {
   // 1: récupération des posts recherchés
   const limit = parseInt(req.params.limit);
   const offset = parseInt(req.params.offset);
-  const sql = "SELECT Posts.id AS postId, Posts.post_date AS postDate, Posts.picture AS postImage, Posts.description as postContent, Posts.privacy AS postPrivacy, Users.id AS userId, Users.name AS userName, Users.picture AS userPicture\
-  FROM Posts\
-  INNER JOIN Users ON Posts.user_id = Users.id\
+  const sql = "SELECT posts.id AS postId, posts.post_date AS postDate, posts.picture AS postImage, posts.description as postContent, posts.privacy AS postPrivacy, users.id AS userId, users.name AS userName, users.picture AS userPicture\
+  FROM posts\
+  INNER JOIN users ON posts.user_id = users.id\
   ORDER BY postDate DESC\
   LIMIT ? OFFSET ?;";
   const sqlParams = [limit, offset];
@@ -193,10 +193,10 @@ exports.getOnePost = (req, res, next) => {
   const connection = database.connect();
   // 1: récupération des posts recherchés
   const postId = parseInt(req.params.id);
-  const sql = "SELECT Posts.id AS postId, Posts.post_date AS postDate, Posts.picture AS postImage, Posts.description as postContent, Users.id AS userId, Users.name AS userName, Users.picture AS userPicture\
-  FROM Posts\
-  INNER JOIN Users ON Posts.user_id = Users.id\
-  WHERE Posts.id = ?\
+  const sql = "SELECT posts.id AS postId, posts.post_date AS postDate, posts.picture AS postImage, posts.description as postContent, users.id AS userId, users.name AS userName, users.picture AS userPicture\
+  FROM posts\
+  INNER JOIN users ON posts.user_id = users.id\
+  WHERE posts.id = ?\
   ORDER BY postDate DESC";
   const sqlParams = [postId];
   connection.execute(sql, sqlParams, (error, rawPosts, fields) => {
@@ -228,7 +228,7 @@ exports.getOnePost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   const connection = database.connect();
   const postId = parseInt(req.params.id, 10);
-  const sql = "DELETE FROM Posts WHERE id=?;";
+  const sql = "DELETE FROM posts WHERE id=?;";
   const sqlParams = [postId];
   connection.execute(sql, sqlParams, (error, results, fields) => {
     if (error) {

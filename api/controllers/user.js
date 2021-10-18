@@ -159,7 +159,7 @@ exports.getCurrentUser = (req, res, next) => {
  */
 exports.getAllUsers = (req, res, next) => {
   const connection = database.connect();
-  //const sql = "SELECT id, name, picture FROM Users;";
+  //const sql = "SELECT id, name, picture FROM users;";
   // GET CURRENT AUTH USER ID
   const cryptedCookie = new Cookies(req, res).get('snToken');
   const cookie = JSON.parse(cryptojs.AES.decrypt(cryptedCookie, process.env.COOKIE_KEY).toString(cryptojs.enc.Utf8));
@@ -189,7 +189,7 @@ exports.addFriend = (req, res) => {
 
   // GET FRIEND ID
   const searchId = req.params.id;
-  //const sql = "SELECT * FROM Users WHERE id=?";
+  //const sql = "SELECT * FROM users WHERE id=?";
   // Requete SQL principale
   const sql = "\
       INSERT INTO friends (id_user1, id_user2)\
@@ -434,10 +434,10 @@ exports.getAllPostsOfUser = (req, res, next) => {
   const connection = database.connect();
   // 1: récupération de tous les posts
   const userId = req.params.id;
-  const sql = "SELECT Posts.id AS postId, Posts.publication_date AS postDate, Posts.imageurl AS postImage, Posts.content as postContent, users.id AS userId, users.name AS userName, users.pictureurl AS userPicture\
-  FROM Posts\
-  INNER JOIN users ON Posts.user_id = users.id\
-  WHERE Posts.user_id = ?\
+  const sql = "SELECT posts.id AS postId, posts.publication_date AS postDate, posts.imageurl AS postImage, posts.content as postContent, users.id AS userId, users.name AS userName, users.pictureurl AS userPicture\
+  FROM posts\
+  INNER JOIN users ON posts.user_id = users.id\
+  WHERE posts.user_id = ?\
   ORDER BY postDate DESC;";
   const sqlParams = [userId];
   connection.execute(sql, sqlParams, (error, rawPosts, fields) => {
