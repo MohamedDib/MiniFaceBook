@@ -89,7 +89,9 @@ exports.login = (req, res, next) => {
           const cryptedCookie = cryptojs.AES.encrypt(JSON.stringify(cookieContent), process.env.COOKIE_KEY).toString();
           new Cookies(req, res).set('snToken', cryptedCookie, {
             httpOnly: true,
-            maxAge: 3600000  // cookie pendant 1 heure
+            maxAge: 3600000,  // cookie pendant 1 heure
+            secure:true,
+            sameSite:'none'
           })
 
           results[0].password = undefined;
@@ -112,7 +114,9 @@ exports.logout = (req, res, next) => {
   // on remplace le cookie par un vide
   new Cookies(req, res).set('snToken', "", {
     httpOnly: true,
-    maxAge: 1  // 1ms (= suppression quasi instantannée)
+    maxAge: 1,  // 1ms (= suppression quasi instantannée)
+    secure:true,
+    sameSite:'none'
   })
   res.status(200).json({ message: "utilisateur déconnecté" });
 }
@@ -418,7 +422,9 @@ exports.deleteAccount = (req, res, next) => {
       // pour cela : on écrase le cookie existant avec un cookie vide, et qui a en plus une durée de vie de 1 seconde..
       new Cookies(req, res).set('snToken', false, {
         httpOnly: true,
-        maxAge: 1000
+        maxAge: 1000,
+        secure:true,
+        sameSite:'none'
       });
       res.status(201).json({ message: 'Utilisateur supprimé' });
     }
