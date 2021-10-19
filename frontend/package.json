@@ -2,9 +2,9 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
+    "start": "node server.js",
+    "heroku-postbuild": "ng build --prod",
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -19,8 +19,10 @@
     "@angular/platform-browser": "~10.1.5",
     "@angular/platform-browser-dynamic": "~10.1.5",
     "@angular/router": "~10.1.5",
+    "express": "^4.17.1",
     "ngx-image-cropper": "^3.2.1",
     "ngx-infinite-scroll": "^9.1.0",
+    "path": "^0.12.7",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.2",
     "zone.js": "~0.11.1"
@@ -44,5 +46,9 @@
     "ts-node": "~9.0.0",
     "tslint": "~6.1.0",
     "typescript": "~4.0.3"
+  },
+  "engines": {
+    "node": "14.18.0",
+    "npm": "6.14.15"
   }
 }
