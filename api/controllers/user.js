@@ -91,7 +91,7 @@ exports.login = (req, res, next) => {
               httpOnly: true,
               maxAge: 3600000,  // cookie pendant 1 heure
               secure:true,
-              sameSite:'none',
+              sameSite:'none'
             })
 
             results[0].password = undefined;
@@ -116,7 +116,7 @@ exports.logout = (req, res, next) => {
     httpOnly: true,
     maxAge: 1,  // 1ms (= suppression quasi instantannée)
     secure:true,
-    sameSite:'none',
+    sameSite:'none'
   })
   res.status(200).json({ message: "utilisateur déconnecté" });
 }
@@ -424,7 +424,7 @@ exports.deleteAccount = (req, res, next) => {
         httpOnly: true,
         maxAge: 1000,
         secure:true,
-        sameSite:'none',
+        sameSite:'none'
       });
       res.status(201).json({ message: 'Utilisateur supprimé' });
     }
