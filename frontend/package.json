@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
+    "start:prod": "node server.js",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -19,6 +20,7 @@
     "@angular/platform-browser": "~10.1.5",
     "@angular/platform-browser-dynamic": "~10.1.5",
     "@angular/router": "~10.1.5",
+    "express": "^4.17.1",
     "ngx-image-cropper": "^3.2.1",
     "ngx-infinite-scroll": "^9.1.0",
     "rxjs": "~6.6.3",
@@ -43,6 +45,6 @@
     "protractor": "~7.0.0",
     "ts-node": "~9.0.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.0.3" 
+    "typescript": "~4.0.3"
   }
 }
