@@ -14,36 +14,36 @@ const { getCommentsOfEachPosts, getLikesOfEachPosts } = require('./post');
  */
 exports.register = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
-    .then(hash => {
-      const connection = database.connect();
+      .then(hash => {
+        const connection = database.connect();
 
-      // Cryptage et échappement SQL des données utilisateurs
-      const name = req.body.name;
-      const email = req.body.email;
-      const password = cryptojs.AES.encrypt(hash, process.env.CRYPT_USER_INFO).toString();
+        // Cryptage et échappement SQL des données utilisateurs
+        const name = req.body.name;
+        const email = req.body.email;
+        const password = cryptojs.AES.encrypt(hash, process.env.CRYPT_USER_INFO).toString();
 
-      // Requete SQL principale
-      const sql = "\
+        // Requete SQL principale
+        const sql = "\
       INSERT INTO users (name, email, password)\
       VALUES (?, ?, ?);";
-      const sqlParams = [name, email, password];
-      
-      // Envoi de la requete et réponse au frontend en fonction des erreurs SQL
-      connection.execute(sql, sqlParams, (error, results, fields) => {
-        if (error) {
-          if (error.errno === 1062) { // ERREUR : email déjà utilisé dans la base
-            res.status(403).json({ "error": "L'email est déjà utilisé !" });
-          } else { // Autre erreur SQL
-            res.status(500).json({ "error": error.sqlMessage });
-          }
-        } else { // Pas d'erreur : utilisateur ajouté
-          res.status(201).json({ message: 'Utilisateur créé' });
-        }
-      });
-      connection.end();
+        const sqlParams = [name, email, password];
 
-    })
-    .catch(error => res.status(500).json({ error }));
+        // Envoi de la requete et réponse au frontend en fonction des erreurs SQL
+        connection.execute(sql, sqlParams, (error, results, fields) => {
+          if (error) {
+            if (error.errno === 1062) { // ERREUR : email déjà utilisé dans la base
+              res.status(403).json({ "error": "L'email est déjà utilisé !" });
+            } else { // Autre erreur SQL
+              res.status(500).json({ "error": error.sqlMessage });
+            }
+          } else { // Pas d'erreur : utilisateur ajouté
+            res.status(201).json({ message: 'Utilisateur créé' });
+          }
+        });
+        connection.end();
+
+      })
+      .catch(error => res.status(500).json({ error }));
 }
 
 /**
@@ -59,47 +59,49 @@ exports.login = (req, res, next) => {
   connection.execute(sql, sqlParams, (error, results, fields) => {
     // SI : erreur SQL
     if (error) {
-      res.status(500).json({ "error": error.sqlMessage });
-    
-    // SI : Utilisateur non trouvé
+      res.status(500).Fjson({ "error": error.sqlMessage });
+
+      // SI : Utilisateur non trouvé
     } else if (results.length == 0) {
       res.status(404).json({ error: 'Cet utilisateur n\'existe pas' });
 
-    // SI : Utilisateur trouvé
+      // SI : Utilisateur trouvé
     } else {
       const matchingHash = cryptojs.AES.decrypt(results[0].password, process.env.CRYPT_USER_INFO).toString(cryptojs.enc.Utf8);
 
       bcrypt.compare(req.body.password, matchingHash)
-        .then(valid => {
-          if (!valid) {
-            return res.status(401).json({ error: 'Mot de passe incorrect!' });
-          }
+          .then(valid => {
+            if (!valid) {
+              return res.status(401).json({ error: 'Mot de passe incorrect!' });
+            }
 
-          const newToken = jwt.sign(
-            { userId: results[0].id },
-            process.env.JWT_KEY,
-            { expiresIn: '24h' }
-          );
-          
-          // Envoi du token & userId dans un cookie
-          const cookieContent = {
-            token: newToken,
-            userId: results[0].id
-          };
-          const cryptedCookie = cryptojs.AES.encrypt(JSON.stringify(cookieContent), process.env.COOKIE_KEY).toString();
-          new Cookies(req, res).set('snToken', cryptedCookie, {
-            httpOnly: true,
-            maxAge: 3600000  // cookie pendant 1 heure
+            const newToken = jwt.sign(
+                { userId: results[0].id },
+                process.env.JWT_KEY,
+                { expiresIn: '24h' }
+            );
+
+            // Envoi du token & userId dans un cookie
+            const cookieContent = {
+              token: newToken,
+              userId: results[0].id
+            };
+            const cryptedCookie = cryptojs.AES.encrypt(JSON.stringify(cookieContent), process.env.COOKIE_KEY).toString();
+            new Cookies(req, res).set('snToken', cryptedCookie, {
+              httpOnly: true,
+              maxAge: 3600000,  // cookie pendant 1 heure
+              secure:true,
+              sameSite:'none'
+            })
+
+            results[0].password = undefined;
+
+            res.status(200).json({
+              message: 'Utilisateur loggé',
+              ...results[0]
+            });
           })
-
-          results[0].password = undefined;
-
-          res.status(200).json({
-            message: 'Utilisateur loggé',
-            ...results[0]
-          });
-        })
-        .catch(error => res.status(500).json({ error })); 
+          .catch(error => res.status(500).json({ error }));
     }
   });
   connection.end();
@@ -112,7 +114,9 @@ exports.logout = (req, res, next) => {
   // on remplace le cookie par un vide
   new Cookies(req, res).set('snToken', "", {
     httpOnly: true,
-    maxAge: 1  // 1ms (= suppression quasi instantannée)
+    maxAge: 1,  // 1ms (= suppression quasi instantannée)
+    secure:true,
+    sameSite:'none'
   })
   res.status(200).json({ message: "utilisateur déconnecté" });
 }
@@ -139,11 +143,11 @@ exports.getCurrentUser = (req, res, next) => {
     if (error) {
       res.status(500).json({ "error": error.sqlMessage });
 
-    // SI : Utilisateur non trouvé
+      // SI : Utilisateur non trouvé
     } else if (results.length === 0) {
       res.status(401).json({ error: 'Cet utilisateur n\'existe pas' });
 
-    // SI : Utilisateur trouvé
+      // SI : Utilisateur trouvé
     } else {
       results[0].password = undefined
       res.status(200).json({
@@ -232,11 +236,11 @@ exports.getOneUser = (req, res, next) => {
     if (error) {
       res.status(500).json({ "error": error.sqlMessage });
 
-    // SI : Utilisateur non trouvé
+      // SI : Utilisateur non trouvé
     } else if (results.length === 0) {
       res.status(401).json({ error: 'Cet utilisateur n\'existe pas' });
 
-    // SI : Utilisateur trouvé
+      // SI : Utilisateur trouvé
     } else {
       results[0].password = undefined
 
@@ -271,13 +275,13 @@ const isFriend = async (req, res) => {
 
 
   // Envoi de la requete et réponse au frontend en fonction des erreurs SQL
-/*  await connection.execute(sql, sqlParams, (error, results, fields) => {
-    if (error) {
-      console.log(error.sqlMessage);
-    } else { // Pas d'erreur : utilisateur
-      return results[0].isFriend;
-    }
-  });*/
+  /*  await connection.execute(sql, sqlParams, (error, results, fields) => {
+      if (error) {
+        console.log(error.sqlMessage);
+      } else { // Pas d'erreur : utilisateur
+        return results[0].isFriend;
+      }
+    });*/
   const result = await connection.execute(sql, sqlParams || {}, (error, results, fields));
   console.log(result);
 }
@@ -317,30 +321,30 @@ exports.changePassword = (req, res, next) => {
     } else {
       const DBPasswordHash = cryptojs.AES.decrypt(results[0].password, process.env.CRYPT_USER_INFO).toString(cryptojs.enc.Utf8);
       bcrypt.compare(req.body.oldPassword, DBPasswordHash)
-        .then(valid => {
-          if (!valid) {
-            connection.end();
-            return res.status(401).json({ error: 'Ancien mot de passe incorrect!' });
-          }
-          // L'ancien mot de passe est correct, donc mise à jour du mot de passe :
-          bcrypt.hash(req.body.newPassword, 10)
-            .then(hash => {
-              const newPassword = cryptojs.AES.encrypt(hash, process.env.CRYPT_USER_INFO).toString();
-              const sql2 = "UPDATE users SET password=? WHERE id=?";
-              const sqlParams2 = [newPassword, searchId];
-              connection.execute(sql2, sqlParams2, (error, results, fields) => {
-                if (error) {
-                  connection.end();
-                  res.status(500).json({ "error": error.sqlMessage });
-                } else {
-                  connection.end();
-                  res.status(201).json({ message: 'Mot de passe modifié' });
-                }
-              })
-            })
-            .catch(error => res.status(500).json({ error }));
-        })
-        .catch(error => res.status(500).json({ error }));
+          .then(valid => {
+            if (!valid) {
+              connection.end();
+              return res.status(401).json({ error: 'Ancien mot de passe incorrect!' });
+            }
+            // L'ancien mot de passe est correct, donc mise à jour du mot de passe :
+            bcrypt.hash(req.body.newPassword, 10)
+                .then(hash => {
+                  const newPassword = cryptojs.AES.encrypt(hash, process.env.CRYPT_USER_INFO).toString();
+                  const sql2 = "UPDATE users SET password=? WHERE id=?";
+                  const sqlParams2 = [newPassword, searchId];
+                  connection.execute(sql2, sqlParams2, (error, results, fields) => {
+                    if (error) {
+                      connection.end();
+                      res.status(500).json({ "error": error.sqlMessage });
+                    } else {
+                      connection.end();
+                      res.status(201).json({ message: 'Mot de passe modifié' });
+                    }
+                  })
+                })
+                .catch(error => res.status(500).json({ error }));
+          })
+          .catch(error => res.status(500).json({ error }));
     }
   });
 }
@@ -418,7 +422,9 @@ exports.deleteAccount = (req, res, next) => {
       // pour cela : on écrase le cookie existant avec un cookie vide, et qui a en plus une durée de vie de 1 seconde..
       new Cookies(req, res).set('snToken', false, {
         httpOnly: true,
-        maxAge: 1000
+        maxAge: 1000,
+        secure:true,
+        sameSite:'none'
       });
       res.status(201).json({ message: 'Utilisateur supprimé' });
     }
@@ -447,21 +453,21 @@ exports.getAllPostsOfUser = (req, res, next) => {
     } else {
       // 2: Pour chaque post, on va chercher tous les commentaires du post
       getCommentsOfEachPosts(rawPosts, connection)
-        .then(postsWithoutLikes => {
-          // 3: Pour chaque post, on rajoute les likes/dislikes
-          const cryptedCookie = new Cookies(req, res).get('snToken');
-          const userId = JSON.parse(cryptojs.AES.decrypt(cryptedCookie, process.env.COOKIE_KEY).toString(cryptojs.enc.Utf8)).userId;
-          getLikesOfEachPosts(postsWithoutLikes, userId, connection)
-            .then(posts => {
-              res.status(200).json({ posts });
-            })
-            .catch(err => {
-              res.status(500).json({ "error": "Un problème est survenu" });
-            })
-        })
-        .catch(err => {
-          res.status(500).json({ "error": "Un problème est survenu" });
-        })
+          .then(postsWithoutLikes => {
+            // 3: Pour chaque post, on rajoute les likes/dislikes
+            const cryptedCookie = new Cookies(req, res).get('snToken');
+            const userId = JSON.parse(cryptojs.AES.decrypt(cryptedCookie, process.env.COOKIE_KEY).toString(cryptojs.enc.Utf8)).userId;
+            getLikesOfEachPosts(postsWithoutLikes, userId, connection)
+                .then(posts => {
+                  res.status(200).json({ posts });
+                })
+                .catch(err => {
+                  res.status(500).json({ "error": "Un problème est survenu" });
+                })
+          })
+          .catch(err => {
+            res.status(500).json({ "error": "Un problème est survenu" });
+          })
     }
   })
 }
