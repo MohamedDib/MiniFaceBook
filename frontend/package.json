@@ -2,9 +2,9 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
-    "start": "node server.js",
-    "heroku-postbuild": "ng build --prod",
     "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -46,9 +46,5 @@
     "ts-node": "~9.0.0",
     "tslint": "~6.1.0",
     "typescript": "~4.0.3"
-  },
-  "engines": {
-    "node": "14.18.0",
-    "npm": "6.14.15"
-  }
+  } 
 }
