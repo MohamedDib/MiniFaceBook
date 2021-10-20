@@ -5,7 +5,7 @@
     "preinstall": "npm config set package-lock false",
     "ng": "ng",
     "start": "node server.js",
-    "build": "ng build",
+    "build": "npm install",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
