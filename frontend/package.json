@@ -2,14 +2,14 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
-    "preinstall": "npm config set package-lock false",
+ 
     "ng": "ng",
     "start": "node server.js",
     "build": "npm install",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --prod"
+    "heroku-postbuild": "ng build --configuration production"
   },
   "private": true,
   "dependencies": {
