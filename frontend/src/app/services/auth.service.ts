@@ -39,7 +39,7 @@ export class AuthService {
    * @param password mot de passe de l'utilisateur
    */
   public loginUser(email: string, password: string): void {
-    this.httpClient.post(`${this.userUrl}/login`, {email, password}, { /*withCredentials: true, */observe: 'response' })
+    this.httpClient.post(`${this.userUrl}/login`, {email, password}, { withCredentials: true, observe: 'response' })
       .pipe(catchError(err => {
         return of(err);
       }))
@@ -57,7 +57,7 @@ export class AuthService {
   }
 
   public logoutUser(): void {
-    this.httpClient.get(`${this.userUrl}/logout`, { /*withCredentials: true,*/ observe: 'response' })
+    this.httpClient.get(`${this.userUrl}/logout`, { withCredentials: true, observe: 'response' })
       .pipe(catchError(err => {
         return of(err);
       }))
@@ -73,7 +73,7 @@ export class AuthService {
   }
 
   public getCurrentUserInfo(): void {
-    this.httpClient.get(`${this.userUrl}/currentuser`, { /*withCredentials: true,*/ observe: 'response' })
+    this.httpClient.get(`${this.userUrl}/currentuser`, { withCredentials: true, observe: 'response' })
       .pipe(catchError(err => {
         this.log(`Veuillez vous identifier`);
         return of(err);
@@ -89,7 +89,7 @@ export class AuthService {
   }
 
   public createNewUser(name: string, email: string, password: string): Observable<HttpResponse> {
-    return this.httpClient.post(`${this.userUrl}/register`, {name, email, password}, { /*withCredentials: true,*/ observe: 'response' })
+    return this.httpClient.post(`${this.userUrl}/register`, {name, email, password}, { withCredentials: true, observe: 'response' })
       .pipe(catchError(err => {
         return of(err);
       }));
