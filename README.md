@@ -14,8 +14,6 @@ La base MySQL est hébérgé sur https://www.freesqldatabase.com/
 - RAMDANI Massinissa
 - DIB Mohamed
 - HEYRAUD Dylan
-- DAOUADJI Manel 
-- MENGUELTI Yasmine
 
 #### Back-End
 - Serveur Node.js avec le framework Express
