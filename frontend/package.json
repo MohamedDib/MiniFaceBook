@@ -13,16 +13,15 @@
   },
   "private": true,
   "dependencies": {
-
     "ngx-image-cropper": "^3.2.1",
     "ngx-infinite-scroll": "^9.1.0",
-
     "@angular/animations": "~12.2.0",
     "@angular/common": "~12.2.0",
     "@angular/compiler": "~12.2.0",
     "@angular/core": "~12.2.0",
     "@angular/forms": "~12.2.0",
     "@angular/platform-browser": "~12.2.0",
+    "@angular/service-worker": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
     "express": "^4.17.1",
