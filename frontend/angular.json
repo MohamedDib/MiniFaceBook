@@ -126,6 +126,16 @@
               "devServerTarget": "frontend:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "frontend:build:production",
+            "firebaseProject": "paolibook2",
+            "firebaseHostingSite": "paolibook2"
+          }
         }
       }
     }
