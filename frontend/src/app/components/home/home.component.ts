@@ -9,6 +9,7 @@ import { ImageService } from '../../services/image.service';
 
 import { Post } from '../../interfaces/Post.interface';
 import { HttpResponse } from '../../interfaces/HttpResponse.interface';
+import {SwPush} from '@angular/service-worker';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ export class HomeComponent implements OnInit {
   public posts: Post[]; // Posts affichés actuellement
   // NB: this.posts.length = nombre de posts actuellement affichés
   private postsBatch = 2; // Nombre de post supplémentaires qui seront chargés lorsqu'on arrive en bas de page (infinite scroll)
+  private readonly publicKey = 'BLBuFp4WTSzS9NDmgRoex_7GAwAI6_DdjNOcD8-0IG74iDIQk7wQvIZmqWE5t8W0PK29KdjB9lxOS9jDfLlqjAA';
 
 
   constructor(
@@ -28,11 +30,13 @@ export class HomeComponent implements OnInit {
     private messagesService: MessagesService,
     private commentsService: CommentsService,
     private likesService: LikesService,
-    public imageService: ImageService
+    public imageService: ImageService,
+    private swPush: SwPush
   ) { }
 
   public ngOnInit(): void {
     this.getPostsFromStart(this.postsBatch);
+    this.pushSubscription();
   }
 
   /**
@@ -176,6 +180,19 @@ export class HomeComponent implements OnInit {
           alert("ERROR");
         }
       });
+  }
+
+  public pushSubscription(): void{
+    console.log('Im in !!!!');
+    if (!this.swPush.isEnabled){
+      console.log('Notification in not enabled !');
+      return;
+    }
+    this.swPush.requestSubscription({
+      serverPublicKey: this.publicKey,
+    })
+      .then(sub => console.log(JSON.stringify(sub)))
+      .catch( err => console.log(err));
   }
 
 }

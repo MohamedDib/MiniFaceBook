@@ -11,6 +11,7 @@ import { NotificationsService } from './notifications.service';
 
 import { User } from '../interfaces/User.interface';
 import { HttpResponse } from '../interfaces/HttpResponse.interface';
+import {SwPush} from '@angular/service-worker';
 
 
 @Injectable({
@@ -20,7 +21,6 @@ export class AuthService {
   public user: User;
   private userUrl = `${environment.backendServer}/api/user`;
 
-
   constructor(
     private httpClient: HttpClient,
     private messagesService: MessagesService,
@@ -28,6 +28,7 @@ export class AuthService {
     private notificationService: NotificationsService
   ) { }
 
+  ngOnIni
   /** Log a message with the MessageService */
   private log(message: string): void {
     this.messagesService.add(`Authentification: ${message}`);
@@ -94,4 +95,6 @@ export class AuthService {
         return of(err);
       }));
   }
+
+
 }
