@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "paolibook2": {
+      "hosting": {
+        "frontend": [
+          "paolibook2"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "paolibook2"
+  }
+}
