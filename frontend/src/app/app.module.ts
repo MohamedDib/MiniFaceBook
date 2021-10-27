@@ -17,6 +17,8 @@ import { UsersComponent } from './components/users/users.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { PostComponent } from './components/post/post.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -39,7 +41,8 @@ import { PostComponent } from './components/post/post.component';
     HttpClientModule,
     AppRoutingModule,
     ImageCropperModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
