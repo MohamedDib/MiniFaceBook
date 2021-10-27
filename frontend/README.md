@@ -1,3 +1,9 @@
+# Notes:
+
+* install http-server
+* ng build --prod
+* http-server -p 4200 -c-1 dist/frontend
+
 # Frontend
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.6.
