@@ -1,7 +1,10 @@
 # Projet Social Network
 ## Master 2 Développeur full stack
-#### Lien demo
+#### Liens demo
 https://paolibook.netlify.app/
+
+https://paolibook2.web.app/
+(on a toujours l'erreur 401)
 
 Le back (node.js) est hébérgé sur Heroku
 

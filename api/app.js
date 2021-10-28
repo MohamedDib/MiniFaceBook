@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const webpush = require('web-push');
 
 // DEVELOPEMENT : Pour le log !
 const Cookies = require('cookies');
@@ -24,9 +25,8 @@ const app = express();
  */
 // Configuration cors
 app.use((req, res, next) => {
-  //res.setHeader('Access-Control-Allow-Origin', 'https://paolibook.herokuapp.com');
+  res.setHeader('Access-Control-Allow-Origin', 'https://paolibook.herokuapp.com');
   //res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:4200');
-  res.setHeader('Access-Control-Allow-Origin', 'https://paolibook2.web.app');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -75,5 +75,34 @@ app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
 app.use('/api/like', likeRoutes);
 app.use('/api/notif', notifRoutes);
+
+/**
+ * WEB PUSH
+ */
+console.log(webpush.generateVAPIDKeys());
+
+const publicKey = 'BLBuFp4WTSzS9NDmgRoex_7GAwAI6_DdjNOcD8-0IG74iDIQk7wQvIZmqWE5t8W0PK29KdjB9lxOS9jDfLlqjAA';
+const privateKey = '_IQOuVkjwpzmJQPDf5YWbBx9-cH7zPtRzxacxvwi5Hg';
+
+const sub = {
+  "endpoint":"https://wns2-par02p.notify.windows.com/w/?token=BQYAAABwwPCCCqL7AZ9UdvhxKAESCJa1Fb5kIj0QZIiFuacn5MK9RKCd6JR8yTANQZ1YVpzveInSDRQEmhJP%2faboLVWrYDJoNFQqd33cwVQksTHQS2EmPyvJiNT8ac26AhE8KITGDCmDfHapacgIybJJR%2ffetfQsw8pFZHtpVQGNvBJu07PgcgXgHNmAgB9aFj7s%2b7mEFbPeTR5stDmxhEKqrCuvCNn9l7xqTQemJatHghxG%2brMzt9hFXjjpO57DeQ5OH6Hjp%2fusT7dTJQa9%2fls%2fa7Wio9I4r9NJS8FcCqgAYq0dm5%2fBMz0mDOws%2feqWI8ToH50%3d",
+  "expirationTime":null,
+  "keys":{
+    "p256dh":"BFDzeWBTaol4Vm-UvHlFo-sF4JLXU-1jwUv43bkfgHL9ivUb3rHa_dvZVqZgOK4yiGTGoDBVpBZ18Oo2ZtN3RBs",
+    "auth":"Rg7xuHpbs_LgVNKDLnWt9A"}
+    };
+
+webpush.setVapidDetails('mailto:example@yourdomain.org', publicKey, privateKey);
+
+const payLoad = {
+  notification: {
+    data: {  },
+    title: 'Test notification',
+    vibrate: [100, 50, 100],
+  },
+};
+
+
+webpush.sendNotification(sub, JSON.stringify(payLoad));
 
 module.exports = app;
