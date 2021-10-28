@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getPostsFromStart(this.postsBatch);
-    this.pushSubscription();
+    //this.pushSubscription();
   }
 
   /**
@@ -103,6 +103,10 @@ export class HomeComponent implements OnInit {
         if (response.status === 201) {
           this.getPostsFromStart(this.posts.length);
           this.messagesService.add(`Publication ajoutée`);
+          /**
+           * GET NOTIF
+           */
+          this.pushSubscription();
           // reset du formulaire
           event.target[0].value = '';
           this.imageService.initialImage = '';

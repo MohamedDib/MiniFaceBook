@@ -2,6 +2,7 @@ require('dotenv').config();
 const Cookies = require('cookies');
 const cryptojs = require('crypto-js');
 const database = require('../utils/database');
+const webpush = require("web-push");
 
 /**
  * Ajout d'une nouvelle publication
@@ -29,6 +30,33 @@ exports.newPost = (req, res, next) => {
     }
   });
 
+  /**
+   * SEND PUSH NOTIF
+   */
+
+  const publicKey = 'BLBuFp4WTSzS9NDmgRoex_7GAwAI6_DdjNOcD8-0IG74iDIQk7wQvIZmqWE5t8W0PK29KdjB9lxOS9jDfLlqjAA';
+  const privateKey = '_IQOuVkjwpzmJQPDf5YWbBx9-cH7zPtRzxacxvwi5Hg';
+
+  const sub = {
+    "endpoint":"https://wns2-par02p.notify.windows.com/w/?token=BQYAAABwwPCCCqL7AZ9UdvhxKAESCJa1Fb5kIj0QZIiFuacn5MK9RKCd6JR8yTANQZ1YVpzveInSDRQEmhJP%2faboLVWrYDJoNFQqd33cwVQksTHQS2EmPyvJiNT8ac26AhE8KITGDCmDfHapacgIybJJR%2ffetfQsw8pFZHtpVQGNvBJu07PgcgXgHNmAgB9aFj7s%2b7mEFbPeTR5stDmxhEKqrCuvCNn9l7xqTQemJatHghxG%2brMzt9hFXjjpO57DeQ5OH6Hjp%2fusT7dTJQa9%2fls%2fa7Wio9I4r9NJS8FcCqgAYq0dm5%2fBMz0mDOws%2feqWI8ToH50%3d",
+    "expirationTime":null,
+    "keys":{
+      "p256dh":"BFDzeWBTaol4Vm-UvHlFo-sF4JLXU-1jwUv43bkfgHL9ivUb3rHa_dvZVqZgOK4yiGTGoDBVpBZ18Oo2ZtN3RBs",
+      "auth":"Rg7xuHpbs_LgVNKDLnWt9A"}
+  };
+
+  webpush.setVapidDetails('mailto:example@yourdomain.org', publicKey, privateKey);
+
+  const payLoad = {
+    notification: {
+      data: {  },
+      title: 'User 5 added a new post !',
+      vibrate: [100, 50, 100],
+    },
+  };
+
+
+  webpush.sendNotification(sub, JSON.stringify(payLoad));
   connection.end();
 }
 
